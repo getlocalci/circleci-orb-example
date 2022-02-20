@@ -1,12 +1,15 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@5.0.0
+
 jobs:
   js-lint:
     docker:
       - image: cimg/node:14.18
     steps:
       - checkout
-      - run: npm ci
+      - node/install-packages
       - run:
           name: Running JS linting and unit test
           command: |
@@ -20,7 +23,7 @@ jobs:
       - image: cimg/node:<< parameters.node-version >>
     steps:
       - checkout
-      - run: npm ci
+      - node/install-packages
       - run:
           name: Running JS linting and unit test
           command: |
