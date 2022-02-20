@@ -3,21 +3,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.0
 
-  js-test:
-    parameters:
-      node-version:
-        type: string
-    docker:
-      - image: cimg/node:<< parameters.node-version >>
-    steps:
-      - checkout
-      - node/install-packages
-      - run:
-          name: Running JS linting and unit test
-          command: |
-            npm run lint:js
-            npm run test:js
-
+jobs:
   php-lint:
     docker:
       - image: cimg/php:8.1
@@ -48,12 +34,13 @@ workflows:
     jobs:
       - node/run:
           npm-run: lint:js
-      - js-test:
+      - node/test:
           requires:
-            - js-lint
+            - node/run
           matrix:
             parameters:
-              node-version: [ '14.18', '15.0', '16.14', '17.4' ]
+              version: [ '14.18', '15.0', '16.14', '17.4' ]
+          run-command: test:js
       - php-lint
       - php-test:
           requires:
