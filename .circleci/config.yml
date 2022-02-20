@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: npm ci
       - run:
-          name: Running JS linting and unit test
+          name: Running JS linting
           command: |
             npm run lint:js
 
