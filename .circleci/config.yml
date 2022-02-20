@@ -1,17 +1,26 @@
-# https://circleci.com/docs/2.0/config-intro/
-
 version: 2.1
 
-orbs:
-  node: circleci/node@5.0.0
-
 jobs:
-  js-build:
+  js-lint:
     docker:
       - image: cimg/node:14.18
     steps:
       - checkout
-      - node/install-packages
+      - run: npm ci
+      - run:
+          name: Running JS linting and unit test
+          command: |
+            npm run lint:js
+
+  js-test:
+    parameters:
+      node-version:
+        type: string
+    docker:
+      - image: cimg/node:<< parameters.node-version >>
+    steps:
+      - checkout
+      - run: npm ci
       - run:
           name: Running JS linting and unit test
           command: |
@@ -31,10 +40,10 @@ jobs:
 
   php-test:
     parameters:
-      php-version-number:
+      php-version:
         type: string
     docker:
-      - image: cimg/php:<< parameters.php-version-number >>
+      - image: cimg/php:<< parameters.php-version >>
     steps:
       - checkout
       - run:
@@ -43,29 +52,20 @@ jobs:
             composer i
             composer test
 
-  e2e-test:
-    machine:
-      image: ubuntu-2004:202111-02
-    steps:
-      - checkout
-      - node/install-packages
-      - run:
-          name: Running e2e tests
-          command: |
-            npm run wp-env start
-            npm run test:e2e
-      - store_artifacts:
-          path: artifacts
-
 workflows:
   test-lint:
     jobs:
-      - js-build
+      - js-lint
+      - js-test:
+          requires:
+            - js-lint
+          matrix:
+            parameters:
+              node-version: [ '14.18', '15.0', '16.14', '17.4' ]
       - php-lint
       - php-test:
           requires:
             - php-lint
           matrix:
             parameters:
-              php-version-number: [ '7.3', '7.4', '8.0', '8.1' ]
-      - e2e-test
+              php-version: [ '7.3', '7.4', '8.0', '8.1' ]
