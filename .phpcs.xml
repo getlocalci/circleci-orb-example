@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="Coding Standard for PHP in CircleCI® Tutorial For Beginners">
-
+<ruleset name="Coding Standard for CircleCI® Orb Example">
     <rule ref="PSR12" />
 
     <arg value="p"/>
