@@ -1,5 +1,5 @@
 {
-    "name": "getlocalci/circleci-tutorial-for-beginners",
+    "name": "getlocalci/circleci-orb-example",
     "description": "A tutorial on CircleCI®",
     "type": "library",
     "license": "GPL-2.0-or-later",

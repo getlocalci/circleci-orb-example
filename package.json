@@ -1,5 +1,5 @@
 {
-  "name": "circleci-tutorial-for-beginners",
+  "name": "@getlocalci/circleci-orb-example",
   "version": "0.1.0",
   "description": "Tutorial for CircleCI®",
   "author": "Ryan Kienstra",
@@ -8,13 +8,13 @@
     "javascript",
     "CI/CD"
   ],
-  "homepage": "https://github.com/getlocalci/circleci-tutorial-for-beginners#readme",
+  "homepage": "https://github.com/getlocalci/circleci-orb-example#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/getlocalci/circleci-tutorial-for-beginners.git"
+    "url": "git+https://github.com/getlocalci/circleci-orb-example.git"
   },
   "bugs": {
-    "url": "https://github.com/getlocalci/circleci-tutorial-for-beginners/issues"
+    "url": "https://github.com/getlocalci/circleci-orb-example/issues"
   },
   "engines": {
     "node": "14"
