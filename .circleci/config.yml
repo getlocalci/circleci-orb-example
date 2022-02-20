@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.0
+  php: circleci/php@1.1.0
 
 jobs:
   php-lint:
@@ -9,25 +10,8 @@ jobs:
       - image: cimg/php:8.1
     steps:
       - checkout
-      - run:
-          name: Linting PHP
-          command: |
-            composer i
-            composer lint
-
-  php-test:
-    parameters:
-      php-version:
-        type: string
-    docker:
-      - image: cimg/php:<< parameters.php-version >>
-    steps:
-      - checkout
-      - run:
-          name: Testing PHP
-          command: |
-            composer i
-            composer test
+      - php/install-packages
+      - run: composer lint
 
 workflows:
   test-lint:
@@ -42,9 +26,9 @@ workflows:
               version: [ '14.18', '15.0', '16.14', '17.4' ]
           run-command: test:js
       - php-lint
-      - php-test:
+      - php/test:
           requires:
             - php-lint
           matrix:
             parameters:
-              php-version: [ '7.3', '7.4', '8.0', '8.1' ]
+              version: [ '7.3', '7.4', '8.0', '8.1' ]
