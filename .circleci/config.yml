@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run: npm ci
       - run:
-          name: Running JS linting and unit test
+          name: Running JS linting
           command: |
             npm run lint:js
 
@@ -22,9 +22,8 @@ jobs:
       - checkout
       - run: npm ci
       - run:
-          name: Running JS linting and unit test
+          name: Running JS unit test
           command: |
-            npm run lint:js
             npm run test:js
 
   php-lint:
