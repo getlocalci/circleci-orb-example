@@ -1,0 +1,70 @@
+version: 2.1
+
+jobs:
+  js-lint:
+    docker:
+      - image: cimg/node:14.18
+    steps:
+      - checkout
+      - run: npm ci
+      - run:
+          name: Running JS linting
+          command: |
+            npm run lint:js
+
+  js-test:
+    parameters:
+      node-version:
+        type: string
+    docker:
+      - image: cimg/node:<< parameters.node-version >>
+    steps:
+      - checkout
+      - run: npm ci
+      - run:
+          name: Running JS unit test
+          command: |
+            npm run test:js
+
+  php-lint:
+    docker:
+      - image: cimg/php:8.1
+    steps:
+      - checkout
+      - run:
+          name: Linting PHP
+          command: |
+            composer i
+            composer lint
+
+  php-test:
+    parameters:
+      php-version:
+        type: string
+    docker:
+      - image: cimg/php:<< parameters.php-version >>
+    steps:
+      - checkout
+      - run:
+          name: Testing PHP
+          command: |
+            composer i
+            composer test
+
+workflows:
+  test-lint:
+    jobs:
+      - js-lint
+      - js-test:
+          requires:
+            - js-lint
+          matrix:
+            parameters:
+              node-version: [ '14.18', '15.0', '16.14', '17.4' ]
+      - php-lint
+      - php-test:
+          requires:
+            - php-lint
+          matrix:
+            parameters:
+              php-version: [ '7.3', '7.4', '8.0', '8.1' ]
